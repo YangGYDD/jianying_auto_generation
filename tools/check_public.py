@@ -14,19 +14,21 @@ ROOT = Path(__file__).resolve().parents[1]
 MAX_FILE_BYTES = 2 * 1024 * 1024
 TOP_FILES = {
     "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CONTRIBUTING.md",
-    "SECURITY.md", ".gitignore", "pyproject.toml", "requirements.txt", "requirements-dev.txt", "MANIFEST.in",
+    "SECURITY.md", ".gitignore", "requirements.txt", "运行环境.bat",
+    "输入文字生成草稿.bat", "模板管理.bat", "立即执行自动化.bat", "生产文案.bat",
+    "安装每日8点任务.bat", "取消每日8点任务.bat", "查看自动任务.bat", "立即运行已安装任务.bat",
 }
 EXTENSIONS = {
-    "src": {".py", ".json", ".svg", ".txt"}, "tests": {".py", ".json"},
-    "tools": {".py"}, "docs": {".md"}, "examples": {".json", ".svg", ".md"},
-    ".github": {".yml", ".yaml", ".md"},
+    "引擎": {".py", ".json"}, "tools": {".py"}, "docs": {".md", ".json"},
+    "licenses": {".txt"}, "examples": {".json", ".txt"}, ".github": {".yml", ".yaml"},
 }
+
 IGNORED_PARTS = {"__pycache__", ".pytest_cache"}
 FORBIDDEN_NAMES = {"config.json", "config.local.json", ".env", "credentials.json", "token.json"}
 SENSITIVE_KEYS = re.compile(
     r"^(?:api[_-]?key|access[_-]?token|refresh[_-]?token|app[_-]?secret|client[_-]?secret|"
     r"password|secret|token|app[_-]?key|client[_-]?id|corp[_-]?id|operator[_-]?id|"
-    r"user[_-]?id|union[_-]?id|base[_-]?id|sheet[_-]?id|open[_-]?conversation[_-]?id)$", re.I)
+    r"user[_-]?id|union[_-]?id|base[_-]?id|sheet[_-]?id|table[_-]?id|open[_-]?conversation[_-]?id)$", re.I)
 ASSIGNMENT = re.compile(
     r'''["']?\b(api_key|access_token|refresh_token|app_secret|client_secret|password|secret|token|app_key|client_id|corp_id|operator_id|user_id|union_id)["']?\s*[:=]\s*["']([^"'\r\n]*)["']''', re.I)
 TOKEN_PATTERNS = (
@@ -54,6 +56,8 @@ def allowed_name(name: str) -> bool:
         return False
     if any(part.lower() in FORBIDDEN_NAMES for part in path.parts):
         return False
+    if name == "引擎/pyJianYingDraft/LICENSE":
+        return True
     if name in TOP_FILES:
         return True
     if path.parts and path.parts[0] == "src":
@@ -153,72 +157,15 @@ def check_tracked(root: Path, public: dict[str, bytes]) -> None:
         raise PublicSafetyError("Tracked files outside public allowlist: " + ", ".join(bad))
 
 
-def check_distribution(path: Path, public: dict[str, bytes]) -> int:
-    """Compare wheel/sdist payloads to scanned source without extracting archives."""
-    entries = []
-    if path.suffix == ".whl":
-        with zipfile.ZipFile(path) as archive:
-            for info in archive.infolist():
-                if info.is_dir():
-                    continue
-                if info.file_size > MAX_FILE_BYTES or (info.external_attr >> 16) & 0o170000 == 0o120000:
-                    raise PublicSafetyError("Distribution contains large file or link")
-                entries.append((info.filename, archive.read(info)))
-    elif path.name.endswith(".tar.gz"):
-        with tarfile.open(path, "r:gz") as archive:
-            for info in archive:
-                if info.isdir():
-                    continue
-                if not info.isfile() or info.size > MAX_FILE_BYTES:
-                    raise PublicSafetyError("Distribution contains large file or link")
-                stream = archive.extractfile(info)
-                entries.append((info.name, stream.read()))
-    else:
-        raise PublicSafetyError("Distribution must be a .whl or .tar.gz")
-    seen = set()
-    for name, data in entries:
-        p = PurePosixPath(name)
-        if name in seen or p.is_absolute() or ".." in p.parts or "\\" in name or ":" in name:
-            raise PublicSafetyError("Distribution contains unsafe/duplicate member")
-        seen.add(name)
-        if path.suffix == ".whl":
-            source_name = "src/" + name
-            is_metadata = len(p.parts) >= 2 and p.parts[0].endswith(".dist-info")
-        else:
-            source_name = "/".join(p.parts[1:])
-            is_metadata = source_name in {"PKG-INFO", "setup.cfg"} or any(part.endswith(".egg-info") for part in p.parts)
-        if source_name in public:
-            if data != public[source_name]:
-                raise PublicSafetyError("Distribution source differs from reviewed tree: " + name)
-        elif is_metadata:
-            metadata_names = {"METADATA", "WHEEL", "RECORD", "entry_points.txt", "top_level.txt", "LICENSE", "THIRD_PARTY_NOTICES.md", "PKG-INFO", "SOURCES.txt", "dependency_links.txt", "setup.cfg"}
-            if p.name not in metadata_names:
-                raise PublicSafetyError("Unexpected distribution metadata: " + name)
-            if p.name in {"LICENSE", "THIRD_PARTY_NOTICES.md"} and data != public.get(p.name):
-                raise PublicSafetyError("Distribution license differs from reviewed source: " + name)
-            errors = scan_content(name, data)
-            if errors:
-                raise PublicSafetyError("\n".join(errors))
-        else:
-            raise PublicSafetyError("Distribution contains unreviewed file: " + name)
-    if not entries:
-        raise PublicSafetyError("Distribution is empty")
-    return len(entries)
-
-
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--tracked", action="store_true", help="also reject tracked files outside the public allowlist")
-    parser.add_argument("--distribution", type=Path, help="also verify a built wheel or source tarball against the reviewed source")
     args = parser.parse_args(argv)
     try:
         files = collect_public(args.root)
         if args.tracked:
             check_tracked(args.root, files)
-        if args.distribution:
-            count = check_distribution(args.distribution, files)
-            print(f"DISTRIBUTION CHECK PASSED: {count} source/metadata members")
     except (OSError, PublicSafetyError) as exc:
         print(f"PUBLIC CHECK FAILED: {exc}")
         return 1

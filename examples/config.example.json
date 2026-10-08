@@ -1,0 +1,37 @@
+{
+  "doubao": {
+    "endpoint": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+    "api_key": "",
+    "model": ""
+  },
+  "dingtalk_news_table": {
+    "说明": "自行配置钉钉表格，所有账号与表标识由用户填写",
+    "app_key": "",
+    "app_secret": "",
+    "base_id": "",
+    "table_id": "",
+    "operator_id": "",
+    "字段": {
+      "序号": "",
+      "来源": "",
+      "日期": "",
+      "标题": "",
+      "链接": "",
+      "摘要": "",
+      "筛选分类": "",
+      "类型": ""
+    }
+  },
+  "automation": {
+    "schedule_time": "08:00",
+    "request_timeout_seconds": 30,
+    "max_news_per_run": 5,
+    "template_mode": "single",
+    "default_template": "默认",
+    "skip_duplicate_news": false,
+    "allowed_news_categories": [
+      "电池行业新闻"
+    ],
+    "max_article_chars": 8000
+  }
+}

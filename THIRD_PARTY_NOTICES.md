@@ -1,32 +1,37 @@
-# 来源与第三方说明
+# 第三方来源与分发说明
 
-核查日期：2026-10-08。这里区分实际使用的组件与只用于来源核查的旧组件。
+核查日期：2026-10-08。当前项目已恢复原版引擎，不再使用先前独立重写的运行时适配器。
 
-## 本仓库分发的内容
+## pyJianYingDraft
 
-本仓库程序、文档、虚构示例新闻、模板结构与 SVG 图形为本次独立实现/创作，按根目录 [MIT LICENSE](LICENSE) 分发。样例不是转载新闻，不包含旧业务模板、商标、音视频、字体、账号配置或历史数据。第三方产品名称仅用于说明接入对象。示例资产说明见包内 `data/ASSETS.txt`。
+上游：GuanYixuan/pyJianYingDraft，固定提交 `60227250c90b2a3b4cb97051300ad780ae8fd62a`，setup.py 版本 0.3.0。
 
-运行依赖为 Python 标准库；不复制、内嵌第三方 Python 包，也不分发 Python 解释器。Python 3.11–3.13 适用其 [PSF 许可及组件声明](https://docs.python.org/3.11/license.html)，安装者自行从可信来源安装。
+原版内 42 个 Python 文件和 2 个结构 JSON 与该提交相同（比较前仅统一文本换行/BOM）；当前保留这些文件不作行为修改。逐文件哈希见 [来源映射](docs/pyjianying-origin-map.json)。新增缺失的 LICENSE，保留上游 `Copyright 2024 Gary Guan` 和完整 Apache-2.0 许可。固定上游未包含需要随此代码复制的独立 NOTICE 文件。
 
-## 构建与 CI 工具
+- 上游代码：https://github.com/GuanYixuan/pyJianYingDraft/tree/60227250c90b2a3b4cb97051300ad780ae8fd62a
+- 许可：https://github.com/GuanYixuan/pyJianYingDraft/blob/60227250c90b2a3b4cb97051300ad780ae8fd62a/LICENSE
 
-| 组件 | 固定版本/引用 | 上游许可证据 | 使用方式 |
-| --- | --- | --- | --- |
-| setuptools | 80.9.0 | [该版本 LICENSE（MIT 条款）](https://github.com/pypa/setuptools/blob/v80.9.0/LICENSE) | Python 构建后端；由 pip 安装，不随源码 ZIP 分发 |
-| wheel | 0.45.1 | [该版本 MIT LICENSE](https://github.com/pypa/wheel/blob/0.45.1/LICENSE.txt) | 本地/CI 构建辅助；不随源码 ZIP 分发 |
-| actions/checkout | v4.2.2 / `11bd71901bbe5b1630ceea73d27597364c9af683` | [MIT LICENSE](https://github.com/actions/checkout/blob/v4.2.2/LICENSE) | GitHub 托管执行，不内嵌 |
-| actions/setup-python | v5.6.0 / `a26af69be951a213d495a4c3e4e4022e16d87065` | [MIT LICENSE](https://github.com/actions/setup-python/blob/v5.6.0/LICENSE) | GitHub 托管执行，不内嵌 |
+未复制上游演示音视频、图片或说明书截图，只分发上述代码和空白结构数据。
 
-pip 使用所选 Python 环境自带版本，作为安装器并非运行依赖；其 [MIT 许可及 vendored 依赖说明](https://github.com/pypa/pip/blob/main/LICENSE.txt) 随 pip 自身分发。构建工具可能包含各自 vendored 依赖，安装后保留它们的许可文件；本仓库的 MIT 不覆盖它们。
+## jycrypto.py 与 jy-draftc
 
-## 旧业务代码的来源核查与排除决定
+保留本项目原版 Python `jycrypto.py`，来源基线为本项目本地提交 `a10e701`，文件在初始快照 `73942ba` 已存在。它不是声称来自上游的 Python发行包；本地文件注释明确引用 jy-draftc。
 
-旧目录只读检查显示有 `pyJianYingDraft` 源码目录与独立 `jycrypto.py`。未把它们或旧模板/素材复制进本仓库。
+已逐项对照上游 C++ 的 MSVC string 布局、三个导出符号、参数传递和加解密调用约定。上游固定提交为 `d1c8a7dcb79c2f17f96ab95013a079e777fc236e`，MIT，`Copyright (c) 2026 wenshui330`。完整 MIT 归属在 [licenses/jy-draftc-MIT.txt](licenses/jy-draftc-MIT.txt)，并在Python文件顶部注明参考来源及项目适配身份。当前只补归属注释，不更换已验证的实现。
 
-- **pyJianYingDraft**：核实上游 GuanYixuan/pyJianYingDraft 的 v0.3.0 对应提交 `60227250c90b2a3b4cb97051300ad780ae8fd62a`，其 [LICENSE 为 Apache-2.0](https://github.com/GuanYixuan/pyJianYingDraft/blob/60227250c90b2a3b4cb97051300ad780ae8fd62a/LICENSE)。但旧本地副本内未找到 LICENSE、发行元数据或可靠版本标识，没有逐文件建立该副本与上游提交及本地修改的对应关系；因此**不能用上游许可推定整份旧副本可以再分发**。本项目不依赖它。
-- **jycrypto.py / jy-draftc**：旧文件注释引用 wenshui330/jy-draftc，这只是来源线索。另行核实上游提交 `d1c8a7dcb79c2f17f96ab95013a079e777fc236e` 的 [LICENSE](https://github.com/wenshui330/jy-draftc/blob/d1c8a7dcb79c2f17f96ab95013a079e777fc236e/LICENSE) 为 MIT，版权声明为 2026 wenshui330。该上游主体是 C++ 实现，不能据此证明旧 Python 文件的作者、移植授权、修改历史和版本。本项目不分发或加载该 Python 文件、解密器及剪映 DLL。
-- **旧业务模板/媒体**：没有取得逐资产来源与再分发授权证明，全部排除。默认 9 槽、其他模板 13/6 槽只作为行为回归需求参考，测试使用新构造的数据。
+- 来源：https://github.com/wenshui330/jy-draftc/blob/d1c8a7dcb79c2f17f96ab95013a079e777fc236e/src/jy-draftc.cpp
+- 许可：https://github.com/wenshui330/jy-draftc/blob/d1c8a7dcb79c2f17f96ab95013a079e777fc236e/LICENSE
 
-这些未解决的来源映射阻碍的是**直接公开旧代码与旧资产**，不影响本仓库使用原创示例、标准库和独立明文草稿适配器。后续如引入第三方实现，需重新固定精确版本、核对源码和许可、保存必要通知并增加测试；不要把旧注释当成审计结论。
+软件从用户本机加载剪映 `videoeditor.dll`，不分发 DLL、安装包或密钥。上游 MIT 不覆盖剪映本身。
 
-剪映、钉钉及豆包均为外部服务/产品，其账号、软件许可、内容和服务条款由相应提供方管理。这里的 MIT 不授予外部账号、媒体、商标、字体或模型服务使用权。
+## 安装依赖
+
+源码包不内嵌解释器、wheel 或第三方 DLL，由用户按 requirements.txt 安装。当前固定 ImageIO 2.37.4、pymediainfo 7.0.1、uiautomation 2.0.29、numpy 2.4.6、pillow 12.3.0、comtypes 1.4.17。前五项从既有环境及新环境核验，comtypes 使用新环境实际安装版本。
+
+安装元数据分别声明 ImageIO BSD-2-Clause、pymediainfo MIT、uiautomation Apache-2.0、numpy 多许可证组合、pillow MIT-CMU、comtypes MIT；它们的完整通知由对应发行包携带，本项目根MIT不覆盖这些依赖。pymediainfo附带的MediaInfo、numpy/pillow等二进制的条款必须随原发行包保留。本次不制作捆绑二进制的离线安装包。
+
+## 项目示例和内部资产
+
+原创示例文本及 demo.py 的两段纯文字场景由本项目创作，按根MIT分发，不是真实新闻。结构序列化由上面的Apache-2.0库完成。业务版模板、媒体、字体缓存、商标图、配置、新闻输入和历史报告全部排除。
+
+CI固定使用actions/checkout和actions/setup-python的MIT版本，不复制它们到产品。各服务的账号、软件许可和服务条款由对应提供方管理；代码许可不授予媒体或商标使用权。

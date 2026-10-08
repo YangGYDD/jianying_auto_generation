@@ -1,0 +1,13 @@
+{
+  "reference_commit": "d1c8a7dcb79c2f17f96ab95013a079e777fc236e",
+  "project_baseline_commit": "a10e701",
+  "comparison": "calling-convention port, not a byte-identical upstream Python file",
+  "three_export_symbols_match": true,
+  "msvc_string_layout": "16-byte union, 64-bit size and capacity in both implementations",
+  "python_additions": [
+    "installation search",
+    "plaintext JSON detection",
+    "encrypt/decrypt roundtrip validation"
+  ],
+  "distribution": "project Python source plus full upstream MIT attribution; no DLL"
+}

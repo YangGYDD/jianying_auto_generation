@@ -43,3 +43,14 @@ venv/
 Thumbs.db
 .idea/
 .vscode/
+
+# User-managed originals and generated business state
+模板库/
+素材库/
+输入/
+报告/
+新闻数据/
+交付包/
+runtime/
+*.db
+*.lock

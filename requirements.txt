@@ -1,1 +1,6 @@
-# Runtime uses Python 3.11-3.13 standard library only. No runtime dependencies.
+imageio==2.37.4
+pymediainfo==7.0.1
+uiautomation==2.0.29; sys_platform == "win32"
+numpy==2.4.6
+pillow==12.3.0
+comtypes==1.4.17; sys_platform == "win32"

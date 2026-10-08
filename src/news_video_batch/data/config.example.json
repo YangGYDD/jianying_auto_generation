@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "dingtalk": {
+    "app_key": "",
+    "app_secret": "",
+    "base_id": "",
+    "sheet_id": "",
+    "operator_id": "",
+    "field_mapping": {"id": "", "title": "title", "summary": "summary", "source": "source", "date": "date", "url": ""},
+    "page_size": 100,
+    "max_pages": 20,
+    "timeout_seconds": 30
+  },
+  "doubao": {
+    "api_key": "",
+    "model": "",
+    "endpoint": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+    "timeout_seconds": 60,
+    "max_tokens": 4096
+  }
+}

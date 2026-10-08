@@ -1,0 +1,10 @@
+Original demonstration assets — copyright 2026 YangGYDD, MIT License.
+
+news.json: two fictional stories and manually authored demo_texts. These are not real reporting,
+model-generated evidence, or recommendations. People, places and events are demonstration inventions.
+template.json: original portable nine-slot layout, not copied from a Jianying business template.
+background.svg: original geometric vector artwork. No stock photography, music, fonts or video included.
+config.example.json: blank credentials and account identifiers; no usable account data.
+
+The portable demo produces JSON/HTML/SRT, not an MP4. No software/runtime, editor assets,
+legacy business template or encrypted draft is distributed with these assets.

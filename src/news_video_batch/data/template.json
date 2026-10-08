@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "name": "原创双画面快讯演示",
+  "width": 1080,
+  "height": 1920,
+  "slots": [
+    {"id":"brand_open","purpose":"开场固定品牌名","mode":"fixed","text":"示例快讯","allow_repeat":true,"max_chars":8,"max_lines":1,"max_chars_per_line":8,"order":1,"start_ms":0,"duration_ms":6000,"track":0,"segment":0},
+    {"id":"headline","purpose":"概括新闻的独立标题","mode":"generated","allow_repeat":false,"max_chars":16,"max_lines":1,"max_chars_per_line":16,"order":2,"start_ms":0,"duration_ms":12000,"track":1,"segment":0},
+    {"id":"lead","purpose":"补充标题的引导语","mode":"generated","allow_repeat":false,"max_chars":20,"max_lines":1,"max_chars_per_line":20,"order":3,"start_ms":0,"duration_ms":12000,"track":2,"segment":0},
+    {"id":"body_first","purpose":"前半屏正文，陈述事件与参与方式","mode":"generated","allow_repeat":false,"max_chars":32,"max_lines":2,"exact_lines":2,"max_chars_per_line":16,"order":4,"start_ms":0,"duration_ms":6000,"track":3,"segment":0},
+    {"id":"body_second","purpose":"后半屏正文，补充后续安排，不重复前文","mode":"generated","allow_repeat":false,"max_chars":32,"max_lines":2,"exact_lines":2,"max_chars_per_line":16,"order":5,"start_ms":6000,"duration_ms":6000,"track":3,"segment":1},
+    {"id":"caption_1","purpose":"连续字幕第一句，交代事件","mode":"generated","allow_repeat":false,"max_chars":22,"max_lines":1,"max_chars_per_line":22,"order":6,"start_ms":0,"duration_ms":4000,"track":4,"segment":0,"sequence":"captions","sequence_index":1},
+    {"id":"caption_2","purpose":"连续字幕第二句，推进过程","mode":"generated","allow_repeat":false,"max_chars":22,"max_lines":1,"max_chars_per_line":22,"order":7,"start_ms":4000,"duration_ms":4000,"track":4,"segment":1,"sequence":"captions","sequence_index":2},
+    {"id":"caption_3","purpose":"连续字幕第三句，补充安排或边界","mode":"generated","allow_repeat":false,"max_chars":22,"max_lines":1,"max_chars_per_line":22,"order":8,"start_ms":8000,"duration_ms":4000,"track":4,"segment":2,"sequence":"captions","sequence_index":3},
+    {"id":"brand_close","purpose":"结尾固定品牌名，与开头一致","mode":"fixed","text":"示例快讯","allow_repeat":true,"max_chars":8,"max_lines":1,"max_chars_per_line":8,"order":9,"start_ms":6000,"duration_ms":6000,"track":0,"segment":1}
+  ]
+}

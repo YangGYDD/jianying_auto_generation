@@ -1,0 +1,45 @@
+# Per-machine inputs, identities and credentials
+.env
+.env.*
+config.json
+config.local.json
+*.local.json
+credentials*.json
+token*.json
+local/
+internal/
+private/
+# Generated results, builds and scratch work
+outputs/
+output/
+work/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+*.zip
+*.whl
+*.tar.gz
+*.sha256
+*.log
+# Media, native runtime and editor state do not belong to this source project
+*.dll
+*.exe
+*.mp4
+*.mp3
+*.wav
+*.mov
+*.png
+*.jpg
+*.jpeg
+*.webp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

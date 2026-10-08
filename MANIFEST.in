@@ -1,0 +1,17 @@
+include README.md LICENSE THIRD_PARTY_NOTICES.md CONTRIBUTING.md SECURITY.md
+include pyproject.toml requirements.txt requirements-dev.txt .gitignore MANIFEST.in
+recursive-include src/news_video_batch *.py *.json *.svg ASSETS.txt
+recursive-include tests *.py *.json
+recursive-include tools *.py
+recursive-include docs *.md
+recursive-include examples *.md *.json *.svg
+recursive-include .github *.md *.yml *.yaml
+global-exclude *.py[cod] config.json config.local.json .env credentials.json token.json
+prune outputs
+prune output
+prune work
+prune local
+prune internal
+prune private
+prune build
+prune dist

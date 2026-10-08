@@ -103,4 +103,3 @@ def read_input(path: Path) -> str:
     if len(raw) > 120000:
         raise ValidationError('Input file exceeds 120000 bytes.')
     return raw.decode('utf-8-sig')
-
